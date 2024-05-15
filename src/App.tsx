@@ -13,9 +13,9 @@ function App() {
       .fill('')
       .map(() => COLORS[Math.floor(Math.random() * COLORS.length)]);
 
-
     return colors
   }
+
 
   const checkColumns = (items:string[]) => {
     for (let i = 0; i <= 8 * 4 - 1; i++) {
@@ -34,7 +34,7 @@ function App() {
       }
     }
 
-    for (let i = 0; i <= 8 * 3 - 1; i++) {
+    for (let i = 0; i <= 8 * 5 - 1; i++) {
       if (!items[i]) continue;
 
       if (items[i] === items[i + 8] &&
@@ -48,7 +48,7 @@ function App() {
       }
     }
 
-    for (let i = 0; i <= 8 * 2 - 1; i++) {
+    for (let i = 0; i <= 8 * 6 - 1; i++) {
       if (!items[i]) continue;
 
       if (items[i] === items[i + 8] &&
@@ -115,12 +115,16 @@ function App() {
     return items;
   }
 
-
   const removeChains = useCallback((items:string[]) => {
-    let nextItems = [...items]
-    nextItems = checkColumns(nextItems);
-    nextItems = checkRows(nextItems);
-    return nextItems;
+    while ( true ) {
+      let nextItems = [...items];
+      nextItems = checkColumns(nextItems);
+      nextItems = checkRows(nextItems);
+      if (items.every((item,index) => item === nextItems[index])) {
+        return nextItems;
+      }
+      items = [...nextItems];
+    }
   },[])
 
   useEffect(() => {
@@ -134,7 +138,13 @@ function App() {
     <div className="App">
       <div className="container">    
         {board.map((item,index) => {
-          return <div className={item}>{index}</div>
+          return (
+            <div 
+              className={item}
+            >
+              {index}
+            </div>
+          )
         })}
       </div>
     </div>
