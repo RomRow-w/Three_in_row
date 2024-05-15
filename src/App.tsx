@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import './App.css'
 
 const COLORS = ['Brown','Green','Purple','Red','White','Yellow']
@@ -11,13 +11,122 @@ function App() {
   const createGrid = () => {
     const colors:string[] = new Array(64) 
       .fill('')
-      .map(() => COLORS[Math.floor(Math.random() * COLORS.length)])
+      .map(() => COLORS[Math.floor(Math.random() * COLORS.length)]);
+
 
     return colors
   }
 
+  const checkColumns = (items:string[]) => {
+    for (let i = 0; i <= 8 * 4 - 1; i++) {
+      if (!items[i]) continue;
+
+      if (items[i] === items[i + 8] &&
+        items[i] === items[i + 8 * 2] &&
+        items[i] === items[i + 8 * 3] &&
+        items[i] === items[i + 8 * 4]
+      ) {
+        items[i] = '';
+        items[i + 8] = '';
+        items[i + 8 * 2] = '';
+        items[i + 8 * 3] = '';
+        items[i + 8 * 4] = '';
+      }
+    }
+
+    for (let i = 0; i <= 8 * 3 - 1; i++) {
+      if (!items[i]) continue;
+
+      if (items[i] === items[i + 8] &&
+        items[i] === items[i + 8 * 2] &&
+        items[i] === items[i + 8 * 3]
+      ) {
+        items[i] = '';
+        items[i + 8] = '';
+        items[i + 8 * 2] = '';
+        items[i + 8 * 3] = '';
+      }
+    }
+
+    for (let i = 0; i <= 8 * 2 - 1; i++) {
+      if (!items[i]) continue;
+
+      if (items[i] === items[i + 8] &&
+        items[i] === items[i + 8 * 2]
+      ) {
+        items[i] = '';
+        items[i + 8] = '';
+        items[i + 8 * 2] = '';
+      }
+    }
+
+    return items;
+  }
+
+  const checkRows = (items:string[]) => {
+    for (let i = 0; i <= 64 - 5; i++) {
+      if (!items[i]) continue;
+
+      if ((i % 8) + 5 > 8) continue;
+
+      if (items[i] === items[i + 1] &&
+        items[i] === items[i + 2] &&
+        items[i] === items[i + 3] &&
+        items[i] === items[i + 4] 
+      ) {
+        items[i] = '';
+        items[i + 1] = '';
+        items[i + 2] = '';
+        items[i + 3] = '';
+        items[i + 4] = '';
+      }
+    }
+    
+    for (let i = 0; i <= 64 - 4; i++) {
+      if (!items[i]) continue;
+
+      if ((i % 8) + 5 > 8) continue;
+
+      if (items[i] === items[i + 1] &&
+        items[i] === items[i + 2] &&
+        items[i] === items[i + 3]
+      ) {
+        items[i] = '';
+        items[i + 1] = '';
+        items[i + 2] = '';
+        items[i + 3] = '';
+      }
+    }
+
+    for (let i = 0; i <= 64 - 3; i++) {
+      if (!items[i]) continue;
+
+      if ((i % 8) + 5 > 8) continue;
+
+      if (items[i] === items[i + 1] &&
+        items[i] === items[i + 2] 
+      ) {
+        items[i] = '';
+        items[i + 1] = '';
+        items[i + 2] = '';
+      }
+    }
+  
+    return items;
+  }
+
+
+  const removeChains = useCallback((items:string[]) => {
+    let nextItems = [...items]
+    nextItems = checkColumns(nextItems);
+    nextItems = checkRows(nextItems);
+    return nextItems;
+  },[])
+
   useEffect(() => {
-    setBoard(createGrid)
+    let newGrid = createGrid();
+    newGrid = removeChains(newGrid);
+    setBoard(newGrid);
   },[])
 
 
