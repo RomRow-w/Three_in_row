@@ -16,7 +16,6 @@ function App() {
     return colors
   }
 
-
   const checkColumns = (items:string[]) => {
     for (let i = 0; i <= 8 * 4 - 1; i++) {
       if (!items[i]) continue;
@@ -114,12 +113,29 @@ function App() {
   
     return items;
   }
+  
+  const moveDown = (items:string[]) => {
+    for (let i = 0; i <= 64; i++) {
+      const isFirstRow = i < 8;
+
+      if (isFirstRow && items[i] === '') {
+        items[i] = COLORS[Math.floor(Math.random() * COLORS.length)];
+      }
+
+      if (items[i + 8] === '') {
+        items[i + 8] = items[i]
+        items[i] = ''
+      }
+    }
+    return items;
+  }
 
   const removeChains = useCallback((items:string[]) => {
     while ( true ) {
       let nextItems = [...items];
       nextItems = checkColumns(nextItems);
       nextItems = checkRows(nextItems);
+      nextItems = moveDown(nextItems);
       if (items.every((item,index) => item === nextItems[index])) {
         return nextItems;
       }
