@@ -1,102 +1,144 @@
 import { useState, useEffect, useCallback } from "react";
-import './App.css'
+import "./App.css";
 
-const COLORS = ['Brown','Green','Purple','Red','White','Yellow']
-
+const COLORS = ["Brown", "Green", "Purple", "Red", "White", "Yellow"];
 
 function App() {
-
-  const [board,setBoard] = useState<string[]>([]);
-
-
+  const [board, setBoard] = useState<string[]>([]);
+  const [currentDragItem, setCurrentDragItem] = useState<number>(-1);
+  const [dropLocation, setDropLocation] = useState<number>(-1);
 
   const createGrid = () => {
-    const colors:string[] = new Array(64) 
-      .fill('')
+    const colors: string[] = new Array(64)
+      .fill("")
       .map(() => COLORS[Math.floor(Math.random() * COLORS.length)]);
 
-    return colors
-  }
+    return colors;
+  };
 
+  const preventDefaultDrag = (e: React.DragEvent) => e.preventDefault();
 
-  const checkColumns = (items:string[]) => {
+  const dragStart = (e: React.DragEvent) => {
+    setCurrentDragItem(Number(e.currentTarget.getAttribute("data-id")));
+  };
+
+  const dragDrop = (e: React.DragEvent) => {
+    setDropLocation(Number(e.currentTarget.getAttribute("data-id")));
+  };
+
+  const dragEnd = () => {
+    const isNextCell =
+      dropLocation === currentDragItem - 1 ||
+      dropLocation === currentDragItem + 1 ||
+      dropLocation === currentDragItem - 8 ||
+      dropLocation === currentDragItem + 8;
+
+    const invalidRightEdge =
+      currentDragItem % 8 === 7 && dropLocation === currentDragItem + 1;
+
+    const invalidLeftEdge =
+      currentDragItem % 8 === 0 && dropLocation === currentDragItem - 1;
+
+    const valid = isNextCell && !invalidRightEdge && !invalidLeftEdge;
+
+    if (valid) {
+      let newBoard: string[] = [...board];
+      const dragAcc = board[currentDragItem];
+
+      newBoard[currentDragItem] = newBoard[dropLocation];
+      newBoard[dropLocation] = dragAcc;
+
+      newBoard = checkColumns(newBoard);
+      newBoard = checkRows(newBoard);
+
+      if (newBoard.filter((x) => !x).length === 0) {
+        return;
+      } else {
+        setBoard(newBoard);
+      }
+    }
+  };
+
+  const checkColumns = (items: string[]) => {
     for (let i = 0; i <= 8 * 4 - 1; i++) {
       if (!items[i]) continue;
 
-      if (items[i] === items[i + 8] &&
+      if (
+        items[i] === items[i + 8] &&
         items[i] === items[i + 8 * 2] &&
         items[i] === items[i + 8 * 3] &&
         items[i] === items[i + 8 * 4]
       ) {
-        items[i] = '';
-        items[i + 8] = '';
-        items[i + 8 * 2] = '';
-        items[i + 8 * 3] = '';
-        items[i + 8 * 4] = '';
+        items[i] = "";
+        items[i + 8] = "";
+        items[i + 8 * 2] = "";
+        items[i + 8 * 3] = "";
+        items[i + 8 * 4] = "";
       }
     }
 
     for (let i = 0; i <= 8 * 5 - 1; i++) {
       if (!items[i]) continue;
 
-      if (items[i] === items[i + 8] &&
+      if (
+        items[i] === items[i + 8] &&
         items[i] === items[i + 8 * 2] &&
         items[i] === items[i + 8 * 3]
       ) {
-        items[i] = '';
-        items[i + 8] = '';
-        items[i + 8 * 2] = '';
-        items[i + 8 * 3] = '';
+        items[i] = "";
+        items[i + 8] = "";
+        items[i + 8 * 2] = "";
+        items[i + 8 * 3] = "";
       }
     }
 
     for (let i = 0; i <= 8 * 6 - 1; i++) {
       if (!items[i]) continue;
 
-      if (items[i] === items[i + 8] &&
-        items[i] === items[i + 8 * 2]
-      ) {
-        items[i] = '';
-        items[i + 8] = '';
-        items[i + 8 * 2] = '';
+      if (items[i] === items[i + 8] && items[i] === items[i + 8 * 2]) {
+        items[i] = "";
+        items[i + 8] = "";
+        items[i + 8 * 2] = "";
       }
     }
 
     return items;
-  }
+  };
 
-  const checkRows = (items:string[]) => {
+  const checkRows = (items: string[]) => {
     for (let i = 0; i <= 64 - 5; i++) {
       if (!items[i]) continue;
 
       if ((i % 8) + 5 > 8) continue;
 
-      if (items[i] === items[i + 1] &&
+      if (
+        items[i] === items[i + 1] &&
         items[i] === items[i + 2] &&
         items[i] === items[i + 3] &&
-        items[i] === items[i + 4] 
+        items[i] === items[i + 4]
       ) {
-        items[i] = '';
-        items[i + 1] = '';
-        items[i + 2] = '';
-        items[i + 3] = '';
-        items[i + 4] = '';
+        items[i] = "";
+        items[i + 1] = "";
+        items[i + 2] = "";
+        items[i + 3] = "";
+        items[i + 4] = "";
       }
     }
-    
+
     for (let i = 0; i <= 64 - 4; i++) {
       if (!items[i]) continue;
 
       if ((i % 8) + 4 > 8) continue;
 
-      if (items[i] === items[i + 1] &&
+      if (
+        items[i] === items[i + 1] &&
         items[i] === items[i + 2] &&
         items[i] === items[i + 3]
       ) {
-        items[i] = '';
-        items[i + 1] = '';
-        items[i + 2] = '';
-        items[i + 3] = '';
+        items[i] = "";
+        items[i + 1] = "";
+        items[i + 2] = "";
+        items[i + 3] = "";
       }
     }
 
@@ -105,65 +147,85 @@ function App() {
 
       if ((i % 8) + 3 > 8) continue;
 
-      if (items[i] === items[i + 1] &&
-        items[i] === items[i + 2] 
-      ) {
-        items[i] = '';
-        items[i + 1] = '';
-        items[i + 2] = '';
+      if (items[i] === items[i + 1] && items[i] === items[i + 2]) {
+        items[i] = "";
+        items[i + 1] = "";
+        items[i + 2] = "";
       }
     }
-  
+
     return items;
-  }
-  
-  const moveDown = (items:string[]) => {
+  };
+
+  const moveDown = (items: string[]) => {
     for (let i = 0; i <= 64; i++) {
       const isFirstRow = i < 8;
 
-      if (isFirstRow && items[i] === '') {
+      if (isFirstRow && items[i] === "") {
         items[i] = COLORS[Math.floor(Math.random() * COLORS.length)];
       }
 
-      if (items[i + 8] === '') {
-        items[i + 8] = items[i]
-        items[i] = ''
+      if (items[i + 8] === "") {
+        items[i + 8] = items[i];
+        items[i] = "";
       }
     }
     return items;
-  }
+  };
 
-  const removeChains = useCallback((items:string[]) => {
-    while ( true ) {
+  const removeChains = useCallback((items: string[]) => {
+    while (true) {
       let nextItems = [...items];
       nextItems = checkColumns(nextItems);
       nextItems = checkRows(nextItems);
       nextItems = moveDown(nextItems);
-      if (items.every((item,index) => item === nextItems[index])) {
+      if (items.every((item, index) => item === nextItems[index])) {
         return nextItems;
       }
       items = [...nextItems];
     }
-  },[])
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      let newBoard = [...board];
+      newBoard = checkColumns(newBoard);
+      newBoard = checkRows(newBoard);
+      newBoard = moveDown(newBoard)
+
+      if (newBoard.every((item,index) => item === board[index])) { 
+        return }
+      else {
+        setBoard(newBoard)
+      }
+    }, 100);
+  }, [board]);
 
   useEffect(() => {
     let newGrid = createGrid();
     newGrid = removeChains(newGrid);
     setBoard(newGrid);
-  },[])
-
+  }, [removeChains]);
 
   return (
     <div className="App">
-      <div className="container">    
-        {board.map((item,index) => {
+      <div className="container">
+        {board.map((item, index) => {
           return (
-            <div 
+            <div
+              draggable
+              data-id={index}
+              onDragStart={dragStart}
+              onDragOver={preventDefaultDrag}
+              onDragEnter={preventDefaultDrag}
+              onDragLeave={preventDefaultDrag}
+              onDrop={dragDrop}
+              onDragEnd={dragEnd}
               className={item}
             >
               {index}
             </div>
-          )
+          );
         })}
       </div>
     </div>
