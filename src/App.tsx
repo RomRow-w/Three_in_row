@@ -7,7 +7,8 @@ function App() {
   const [board, setBoard] = useState<string[]>([]);
   const [currentDragItem, setCurrentDragItem] = useState<number>(-1);
   const [dropLocation, setDropLocation] = useState<number>(-1);
-  const [score, setScore] = useState<number>(0);
+  const [score, setScore] = useState<number[]>([-1,-1]);
+  const [gameOver, setGameOver] = useState<boolean>(true);
 
 
   const createGrid = () => {
@@ -58,6 +59,8 @@ function App() {
       } else {
         setBoard(newBoard);
       }
+
+      setScore(prev => [prev[0], prev[1] - 1]);
     }
   };
 
@@ -77,7 +80,7 @@ function App() {
         items[i + 8 * 3] = "";
         items[i + 8 * 4] = "";
 
-        if (scorable) setScore(prev => prev + 5);
+        if (scorable) setScore(prev => [prev[0] + 5, prev[1]]);
       }
     }
 
@@ -94,7 +97,7 @@ function App() {
         items[i + 8 * 2] = "";
         items[i + 8 * 3] = "";
 
-        if (scorable) setScore(prev => prev + 4);
+        if (scorable) setScore(prev => [prev[0] + 4, prev[1]]);
       }
     }
 
@@ -106,7 +109,7 @@ function App() {
         items[i + 8] = "";
         items[i + 8 * 2] = "";
         
-        if (scorable) setScore(prev => prev + 3);
+        if (scorable) setScore(prev => [prev[0] + 3, prev[1]]);
       }
     }
 
@@ -131,7 +134,7 @@ function App() {
         items[i + 3] = "";
         items[i + 4] = "";
 
-        if (scorable) setScore(prev => prev + 5);
+        if (scorable) setScore(prev => [prev[0] + 5, prev[1]]);
       }
     }
 
@@ -150,7 +153,7 @@ function App() {
         items[i + 2] = "";
         items[i + 3] = "";
 
-        if (scorable) setScore(prev => prev + 4);
+        if (scorable) setScore(prev => [prev[0] + 4, prev[1]]);
       }
     }
 
@@ -164,7 +167,7 @@ function App() {
         items[i + 1] = "";
         items[i + 2] = "";
 
-        if (scorable) setScore(prev => prev + 3);
+        if (scorable) setScore(prev => [prev[0] + 3, prev[1]]);
       }
     }
 
@@ -219,7 +222,11 @@ function App() {
     let newGrid = createGrid();
     newGrid = removeChains(newGrid);
     setBoard(newGrid);
-  }, [removeChains]);
+    setScore([20000,20]);
+    setGameOver(false);
+  }, [removeChains,gameOver]);
+
+  
 
   return (
     <div className="App">
@@ -241,8 +248,8 @@ function App() {
             </div>
           );
         })}
-        <h1>{score}</h1>
       </div>
+      <div>Счет: {score[0]} Ходы: {score[1]} </div>
     </div>
   );
 }
