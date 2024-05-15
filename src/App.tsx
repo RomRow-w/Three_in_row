@@ -7,6 +7,8 @@ function App() {
   const [board, setBoard] = useState<string[]>([]);
   const [currentDragItem, setCurrentDragItem] = useState<number>(-1);
   const [dropLocation, setDropLocation] = useState<number>(-1);
+  const [score, setScore] = useState<number>(0);
+
 
   const createGrid = () => {
     const colors: string[] = new Array(64)
@@ -48,8 +50,8 @@ function App() {
       newBoard[currentDragItem] = newBoard[dropLocation];
       newBoard[dropLocation] = dragAcc;
 
-      newBoard = checkColumns(newBoard);
-      newBoard = checkRows(newBoard);
+      newBoard = checkColumns(newBoard, true);
+      newBoard = checkRows(newBoard, true);
 
       if (newBoard.filter((x) => !x).length === 0) {
         return;
@@ -59,7 +61,7 @@ function App() {
     }
   };
 
-  const checkColumns = (items: string[]) => {
+  const checkColumns = (items: string[], scorable?: boolean) => {
     for (let i = 0; i <= 8 * 4 - 1; i++) {
       if (!items[i]) continue;
 
@@ -74,6 +76,8 @@ function App() {
         items[i + 8 * 2] = "";
         items[i + 8 * 3] = "";
         items[i + 8 * 4] = "";
+
+        if (scorable) setScore(prev => prev + 5);
       }
     }
 
@@ -89,6 +93,8 @@ function App() {
         items[i + 8] = "";
         items[i + 8 * 2] = "";
         items[i + 8 * 3] = "";
+
+        if (scorable) setScore(prev => prev + 4);
       }
     }
 
@@ -99,13 +105,15 @@ function App() {
         items[i] = "";
         items[i + 8] = "";
         items[i + 8 * 2] = "";
+        
+        if (scorable) setScore(prev => prev + 3);
       }
     }
 
     return items;
   };
 
-  const checkRows = (items: string[]) => {
+  const checkRows = (items: string[], scorable?: boolean) => {
     for (let i = 0; i <= 64 - 5; i++) {
       if (!items[i]) continue;
 
@@ -122,6 +130,8 @@ function App() {
         items[i + 2] = "";
         items[i + 3] = "";
         items[i + 4] = "";
+
+        if (scorable) setScore(prev => prev + 5);
       }
     }
 
@@ -139,6 +149,8 @@ function App() {
         items[i + 1] = "";
         items[i + 2] = "";
         items[i + 3] = "";
+
+        if (scorable) setScore(prev => prev + 4);
       }
     }
 
@@ -151,6 +163,8 @@ function App() {
         items[i] = "";
         items[i + 1] = "";
         items[i + 2] = "";
+
+        if (scorable) setScore(prev => prev + 3);
       }
     }
 
@@ -189,8 +203,8 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       let newBoard = [...board];
-      newBoard = checkColumns(newBoard);
-      newBoard = checkRows(newBoard);
+      newBoard = checkColumns(newBoard,true);
+      newBoard = checkRows(newBoard,true);
       newBoard = moveDown(newBoard)
 
       if (newBoard.every((item,index) => item === board[index])) { 
@@ -227,6 +241,7 @@ function App() {
             </div>
           );
         })}
+        <h1>{score}</h1>
       </div>
     </div>
   );
