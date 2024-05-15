@@ -8,6 +8,8 @@ function App() {
 
   const [board,setBoard] = useState<string[]>([]);
 
+
+
   const createGrid = () => {
     const colors:string[] = new Array(64) 
       .fill('')
@@ -15,6 +17,7 @@ function App() {
 
     return colors
   }
+
 
   const checkColumns = (items:string[]) => {
     for (let i = 0; i <= 8 * 4 - 1; i++) {
@@ -84,7 +87,7 @@ function App() {
     for (let i = 0; i <= 64 - 4; i++) {
       if (!items[i]) continue;
 
-      if ((i % 8) + 5 > 8) continue;
+      if ((i % 8) + 4 > 8) continue;
 
       if (items[i] === items[i + 1] &&
         items[i] === items[i + 2] &&
@@ -100,7 +103,7 @@ function App() {
     for (let i = 0; i <= 64 - 3; i++) {
       if (!items[i]) continue;
 
-      if ((i % 8) + 5 > 8) continue;
+      if ((i % 8) + 3 > 8) continue;
 
       if (items[i] === items[i + 1] &&
         items[i] === items[i + 2] 
