@@ -261,7 +261,7 @@ function App() {
         <SideDisplay text="Текущий счет" value={score}></SideDisplay>
         <SideDisplay text="Осталось ходов" value={turnsRemaining}></SideDisplay>
       </div>
-      {gameOver && (
+      {gameOver !== 0 && (
         <GameOverModal score={gameOver} reset={setGameOver}></GameOverModal>
       )}
     </div>
