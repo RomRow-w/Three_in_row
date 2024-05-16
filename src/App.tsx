@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import "./App.css";
+import resetLogo from './assets/Reset.png'
 import GameOverModal from "./components/GameOverModal";
 import SideDisplay from "./components/SideDisplay";
 
@@ -234,7 +235,11 @@ function App() {
 
   return (
     <div className="App">
-      <div className="fill" />
+      <div className="fill">
+        <button className="reset" onClick={() => setGameOver(score? score: -1)}>
+          <img src={resetLogo} alt=''></img>
+        </button>
+      </div>
       <div className="container">
         {board.map((item, index) => {
           return (

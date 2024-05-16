@@ -10,7 +10,7 @@ export default function GameOverModal({ score, reset }: IGameOverModalProps) {
     <div className={cl.wrapper}>
       <div className={cl.modalBlock}>
         <h1>Игра окончена</h1>
-        <div className={cl.modalBlock_text}>Итоговый счет: {score}</div>
+        <div className={cl.modalBlock_text}>Итоговый счет: {score <= 0 ? 0: score}</div>
         <button className={cl.modalBlock_btn} onClick={() => reset(0)}>
           Сыграть ещё!
         </button>
