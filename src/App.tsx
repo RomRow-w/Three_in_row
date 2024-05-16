@@ -220,7 +220,7 @@ function App() {
 
       if (turnsRemaining === 0 && newBoard.filter(x => !x).length === 0) {setGameOver(score)}
     }, 100);
-  }, [board]);
+  }, [board,score,turnsRemaining]);
 
   useEffect(() => {
     let newGrid = createGrid();
