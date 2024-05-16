@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import "./App.css";
+import SideDisplay from "./components/SideDisplay";
 
 const COLORS = ["Brown", "Green", "Purple", "Red", "White", "Yellow"];
 
@@ -7,9 +8,9 @@ function App() {
   const [board, setBoard] = useState<string[]>([]);
   const [currentDragItem, setCurrentDragItem] = useState<number>(-1);
   const [dropLocation, setDropLocation] = useState<number>(-1);
-  const [score, setScore] = useState<number[]>([-1,-1]);
+  const [score, setScore] = useState<number>(-1);
+  const [turnsRemaining, setTurnsRemaining] = useState<number>(-1);
   const [gameOver, setGameOver] = useState<boolean>(true);
-
 
   const createGrid = () => {
     const colors: string[] = new Array(64)
@@ -60,7 +61,7 @@ function App() {
         setBoard(newBoard);
       }
 
-      setScore(prev => [prev[0], prev[1] - 1]);
+      setTurnsRemaining((prev) => prev - 1);
     }
   };
 
@@ -80,7 +81,7 @@ function App() {
         items[i + 8 * 3] = "";
         items[i + 8 * 4] = "";
 
-        if (scorable) setScore(prev => [prev[0] + 5, prev[1]]);
+        if (scorable) setScore((prev) => prev + 5);
       }
     }
 
@@ -97,7 +98,7 @@ function App() {
         items[i + 8 * 2] = "";
         items[i + 8 * 3] = "";
 
-        if (scorable) setScore(prev => [prev[0] + 4, prev[1]]);
+        if (scorable) setScore((prev) => prev + 4);
       }
     }
 
@@ -108,8 +109,8 @@ function App() {
         items[i] = "";
         items[i + 8] = "";
         items[i + 8 * 2] = "";
-        
-        if (scorable) setScore(prev => [prev[0] + 3, prev[1]]);
+
+        if (scorable) setScore((prev) => prev + 3);
       }
     }
 
@@ -134,7 +135,7 @@ function App() {
         items[i + 3] = "";
         items[i + 4] = "";
 
-        if (scorable) setScore(prev => [prev[0] + 5, prev[1]]);
+        if (scorable) setScore((prev) => prev + 5);
       }
     }
 
@@ -153,7 +154,7 @@ function App() {
         items[i + 2] = "";
         items[i + 3] = "";
 
-        if (scorable) setScore(prev => [prev[0] + 4, prev[1]]);
+        if (scorable) setScore((prev) => prev + 4);
       }
     }
 
@@ -167,7 +168,7 @@ function App() {
         items[i + 1] = "";
         items[i + 2] = "";
 
-        if (scorable) setScore(prev => [prev[0] + 3, prev[1]]);
+        if (scorable) setScore((prev) => prev + 3);
       }
     }
 
@@ -206,14 +207,14 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       let newBoard = [...board];
-      newBoard = checkColumns(newBoard,true);
-      newBoard = checkRows(newBoard,true);
-      newBoard = moveDown(newBoard)
+      newBoard = checkColumns(newBoard, true);
+      newBoard = checkRows(newBoard, true);
+      newBoard = moveDown(newBoard);
 
-      if (newBoard.every((item,index) => item === board[index])) { 
-        return }
-      else {
-        setBoard(newBoard)
+      if (newBoard.every((item, index) => item === board[index])) {
+        return;
+      } else {
+        setBoard(newBoard);
       }
     }, 100);
   }, [board]);
@@ -222,14 +223,14 @@ function App() {
     let newGrid = createGrid();
     newGrid = removeChains(newGrid);
     setBoard(newGrid);
-    setScore([20000,20]);
+    setScore(0);
+    setTurnsRemaining(20);
     setGameOver(false);
-  }, [removeChains,gameOver]);
-
-  
+  }, [removeChains, gameOver]);
 
   return (
     <div className="App">
+      <div className="fill"/>
       <div className="container">
         {board.map((item, index) => {
           return (
@@ -249,7 +250,10 @@ function App() {
           );
         })}
       </div>
-      <div>Счет: {score[0]} Ходы: {score[1]} </div>
+      <div className="fill">
+        <SideDisplay text='Текущий счет' value={score}></SideDisplay>
+        <SideDisplay text='Осталось ходов' value={turnsRemaining}></SideDisplay>
+      </div>
     </div>
   );
 }

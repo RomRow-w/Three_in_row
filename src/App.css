@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: rgb(78, 35, 121);
+  background-color: #4A148C;
 }
 
 .container {
@@ -46,4 +46,25 @@
 
 .Purple {
   background-image: url('./assets/Purple.png');
+}
+
+.fill {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 50px;
+  margin: 25px;
+  height: 100%;
+  width: 100%;
+}
+
+
+@media screen and (max-width: 1024px) {
+  .App {
+    flex-direction: column;
+    height: 100%;
+  }
+  .fill {
+    flex-direction: row;
+  }
 }

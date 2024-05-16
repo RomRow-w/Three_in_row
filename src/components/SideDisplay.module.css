@@ -1,0 +1,29 @@
+
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 170px;
+  height: 120px;
+  background-color: #7B1FA2;
+  border-radius: 16px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.wrapper_text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40%;
+  color: white;
+  font-size: 20px;
+}
+
+.wrapper_value {
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 64px;
+  border-radius: 0 0 16px 16px;
+  background-color: #EF5350;
+}
