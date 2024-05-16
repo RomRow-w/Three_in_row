@@ -218,9 +218,11 @@ function App() {
         setBoard(newBoard);
       }
 
-      if (turnsRemaining === 0 && newBoard.filter(x => !x).length === 0) {setGameOver(score)}
+      if (turnsRemaining === 0 && newBoard.filter((x) => !x).length === 0) {
+        setGameOver(score);
+      }
     }, 100);
-  }, [board,score,turnsRemaining]);
+  }, [board, score, turnsRemaining]);
 
   useEffect(() => {
     let newGrid = createGrid();
@@ -232,12 +234,12 @@ function App() {
 
   return (
     <div className="App">
-      <div className="fill"/>
+      <div className="fill" />
       <div className="container">
         {board.map((item, index) => {
           return (
             <div
-              draggable={turnsRemaining > 0? true: false}
+              draggable={turnsRemaining > 0 ? true : false}
               data-id={index}
               onDragStart={dragStart}
               onDragOver={preventDefaultDrag}
@@ -246,16 +248,17 @@ function App() {
               onDrop={dragDrop}
               onDragEnd={dragEnd}
               className={item}
-            >
-            </div>
+            ></div>
           );
         })}
       </div>
       <div className="fill">
-        <SideDisplay text='Текущий счет' value={score}></SideDisplay>
-        <SideDisplay text='Осталось ходов' value={turnsRemaining}></SideDisplay>
+        <SideDisplay text="Текущий счет" value={score}></SideDisplay>
+        <SideDisplay text="Осталось ходов" value={turnsRemaining}></SideDisplay>
       </div>
-      {gameOver && <GameOverModal score={gameOver} reset={setGameOver}></GameOverModal>}
+      {gameOver && (
+        <GameOverModal score={gameOver} reset={setGameOver}></GameOverModal>
+      )}
     </div>
   );
 }

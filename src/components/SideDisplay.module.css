@@ -1,11 +1,9 @@
-
-
 .wrapper {
   display: flex;
   flex-direction: column;
   width: 170px;
   height: 120px;
-  background-color: #7B1FA2;
+  background-color: #7b1fa2;
   border: 3px solid black;
   border-radius: 16px;
   user-select: none;
@@ -26,5 +24,5 @@
   color: white;
   font-size: 64px;
   border-radius: 0 0 16px 16px;
-  background-color: #EF5350;
+  background-color: #ef5350;
 }

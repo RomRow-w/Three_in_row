@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #4A148C;
+  background-color: #4a148c;
 }
 
 .container {
@@ -24,31 +24,31 @@
   height: 80px;
   background-size: cover;
   border-radius: 16px;
-  background-color: rgba(0,0,0,0.3);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .Brown {
-  background-image: url('./assets/Brown.png');
+  background-image: url("./assets/Brown.png");
 }
 
 .Yellow {
-  background-image: url('./assets/Yellow.png');
+  background-image: url("./assets/Yellow.png");
 }
 
 .Red {
-  background-image: url('./assets/Red.png');
+  background-image: url("./assets/Red.png");
 }
 
 .White {
-  background-image: url('./assets/White.png');
+  background-image: url("./assets/White.png");
 }
 
 .Green {
-  background-image: url('./assets/Green.png');
+  background-image: url("./assets/Green.png");
 }
 
 .Purple {
-  background-image: url('./assets/Purple.png');
+  background-image: url("./assets/Purple.png");
 }
 
 .fill {
@@ -60,7 +60,6 @@
   height: 100%;
   width: 100%;
 }
-
 
 @media screen and (max-width: 1024px) {
   .App {
