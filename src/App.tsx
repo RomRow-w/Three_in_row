@@ -247,7 +247,6 @@ function App() {
               onDragEnd={dragEnd}
               className={item}
             >
-              {index}
             </div>
           );
         })}
