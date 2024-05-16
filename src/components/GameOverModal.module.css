@@ -1,0 +1,57 @@
+
+.wrapper {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  user-select: none;
+  margin: 0;
+  padding: 0;
+}
+
+.modalBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 45%;
+  height: 35%;
+  background-color: #7B1FA2;
+  border: 3px solid black;
+  border-radius: 32px;
+  color: white;
+}
+
+.modalBlock h1 {
+  font-size: 52px;
+}
+
+.modalBlock_text {
+  font-size: 24px;
+}
+
+.modalBlock_btn {
+  margin-top: 3%;
+  height: 60px;
+  width: 60%; 
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 1024px) {
+  .modalBlock h1 {
+    font-size: 24px;
+  }
+  .modalBlock_text {
+    font-size: 16px;
+  }
+  .modalBlock_btn {
+    font-size: 16px;
+  }
+}

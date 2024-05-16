@@ -6,8 +6,9 @@
   width: 170px;
   height: 120px;
   background-color: #7B1FA2;
+  border: 3px solid black;
   border-radius: 16px;
-  font-family: 'Times New Roman', Times, serif;
+  user-select: none;
 }
 
 .wrapper_text {
