@@ -22,8 +22,6 @@ function App() {
     return colors;
   };
 
-  const preventDefaultDrag = (e: React.DragEvent) => e.preventDefault();
-
   const dragStart = (e: React.DragEvent) => {
     setCurrentDragItem(Number(e.currentTarget.getAttribute("data-id")));
   };
@@ -68,6 +66,7 @@ function App() {
   };
 
   const checkColumns = (items: string[], scorable?: boolean) => {
+
     for (let i = 0; i <= 8 * 4 - 1; i++) {
       if (!items[i]) continue;
 
@@ -77,11 +76,10 @@ function App() {
         items[i] === items[i + 8 * 3] &&
         items[i] === items[i + 8 * 4]
       ) {
-        items[i] = "";
-        items[i + 8] = "";
-        items[i + 8 * 2] = "";
-        items[i + 8 * 3] = "";
-        items[i + 8 * 4] = "";
+        for (let x = 0; x < 5; x++) {
+          if (x === 0) { items[i] = ''}
+          items[i + 8 * x] = '';
+        }
 
         if (scorable) setScore((prev) => prev + 5);
       }
@@ -95,10 +93,10 @@ function App() {
         items[i] === items[i + 8 * 2] &&
         items[i] === items[i + 8 * 3]
       ) {
-        items[i] = "";
-        items[i + 8] = "";
-        items[i + 8 * 2] = "";
-        items[i + 8 * 3] = "";
+        for (let x = 0; x < 4; x++) {
+          if (x === 0) { items[i] = '' }
+          items[i + 8 * x] = '';
+        }
 
         if (scorable) setScore((prev) => prev + 4);
       }
@@ -108,9 +106,10 @@ function App() {
       if (!items[i]) continue;
 
       if (items[i] === items[i + 8] && items[i] === items[i + 8 * 2]) {
-        items[i] = "";
-        items[i + 8] = "";
-        items[i + 8 * 2] = "";
+        for (let x = 0; x < 3; x++) {
+          if (x === 0) { items[i] = '' }
+          items[i + 8 * x] = '';
+        }
 
         if (scorable) setScore((prev) => prev + 3);
       }
@@ -120,6 +119,7 @@ function App() {
   };
 
   const checkRows = (items: string[], scorable?: boolean) => {
+
     for (let i = 0; i <= 64 - 5; i++) {
       if (!items[i]) continue;
 
@@ -131,11 +131,9 @@ function App() {
         items[i] === items[i + 3] &&
         items[i] === items[i + 4]
       ) {
-        items[i] = "";
-        items[i + 1] = "";
-        items[i + 2] = "";
-        items[i + 3] = "";
-        items[i + 4] = "";
+        for (let x = 0; x < 5; x++) {
+          items[i + x] = '';
+        }
 
         if (scorable) setScore((prev) => prev + 5);
       }
@@ -151,10 +149,9 @@ function App() {
         items[i] === items[i + 2] &&
         items[i] === items[i + 3]
       ) {
-        items[i] = "";
-        items[i + 1] = "";
-        items[i + 2] = "";
-        items[i + 3] = "";
+        for (let x = 0; x < 4; x++) {
+          items[i + x] = '';
+        }
 
         if (scorable) setScore((prev) => prev + 4);
       }
@@ -166,9 +163,9 @@ function App() {
       if ((i % 8) + 3 > 8) continue;
 
       if (items[i] === items[i + 1] && items[i] === items[i + 2]) {
-        items[i] = "";
-        items[i + 1] = "";
-        items[i + 2] = "";
+         for (let x = 0; x < 3; x++) {
+          items[i + x] = '';
+        }
 
         if (scorable) setScore((prev) => prev + 3);
       }
@@ -247,9 +244,9 @@ function App() {
               draggable={turnsRemaining > 0 ? true : false}
               data-id={index}
               onDragStart={dragStart}
-              onDragOver={preventDefaultDrag}
-              onDragEnter={preventDefaultDrag}
-              onDragLeave={preventDefaultDrag}
+              onDragOver={(e) => e.preventDefault()}
+              onDragEnter={(e) => e.preventDefault()}
+              onDragLeave={(e) => e.preventDefault()}
               onDrop={dragDrop}
               onDragEnd={dragEnd}
               className={item}
