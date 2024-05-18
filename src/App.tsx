@@ -241,6 +241,7 @@ function App() {
         {board.map((item, index) => {
           return (
             <div
+              key={index}
               draggable={turnsRemaining > 0 ? true : false}
               data-id={index}
               onDragStart={dragStart}
